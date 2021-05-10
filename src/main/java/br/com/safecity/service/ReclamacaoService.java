@@ -31,24 +31,24 @@ public class ReclamacaoService {
 				ReclamacaoMapper.INSTANCE.domainToResponse(reclamacaoRepository.findByIdReclamacao(idReclamacao)));
 	}
 
-	public List<ReclamacaoResponse> findAll() throws ReclamacaoException {
+	public List<ReclamacaoResponse> buscaTodasReclamacoes() throws ReclamacaoException {
 		Iterable<Reclamacao> it = reclamacaoRepository.findAll();
 		return ReclamacaoMapper.INSTANCE
 				.listDomainToListResponse(StreamSupport.stream(it.spliterator(), false).collect(Collectors.toList()));
 	}
 
-	public void create(@Valid ReclamacaoRequest reclamacaoRequest) throws ReclamacaoException {
+	public void novaReclamacao(@Valid ReclamacaoRequest reclamacaoRequest) throws ReclamacaoException {
 		Reclamacao reclamacao = ReclamacaoMapper.INSTANCE.requestToDomain(reclamacaoRequest);
 		reclamacao.setIdReclamacao(this.maxReclamacao());
 		reclamacaoRepository.save(reclamacao);
 		
 	}
 
-	public long delete(Long idReclamacao) throws ReclamacaoException {
+	public long excluiReclamacao(Long idReclamacao) throws ReclamacaoException {
 		return reclamacaoRepository.deleteByIdReclamacao(idReclamacao);
 	}
 	
-	public void update(@Valid ReclamacaoRequest request, Long idReclamacao) throws ReclamacaoException {
+	public void atualizaReclamacao(@Valid ReclamacaoRequest request, Long idReclamacao) throws ReclamacaoException {
 		Reclamacao reclamacao = reclamacaoRepository.findByIdReclamacao(idReclamacao);
 		if(reclamacao == null) {
 			throw new ReclamacaoException("Reclamacao não encontrada para o id informado!");

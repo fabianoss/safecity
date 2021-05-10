@@ -29,14 +29,14 @@ import br.com.safecity.response.CategoriaResponse;
 import br.com.safecity.service.CategoriaService;
 
 @RestController
-@RequestMapping(name = "/v1/categorias")
+@RequestMapping(value =  "/v1/categorias")
 public class CategoriaController {
 
 	@Autowired
 	private CategoriaService categoriaService;
 
 	@GetMapping(value = "/{idCategoria}")
-	public ResponseEntity<?> one(@PathVariable Long idCategoria) throws CategoriaException {
+	public ResponseEntity<?> categoriaByIdCategoria(@PathVariable Long idCategoria) throws CategoriaException {
 		Optional<CategoriaResponse> optResponse = categoriaService.findByCategoria(idCategoria);
 		if (optResponse.isPresent()) {
 			return ResponseEntity.ok(optResponse.get());
@@ -46,7 +46,7 @@ public class CategoriaController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> all() throws CategoriaException {
+	public ResponseEntity<?> todasCategorias() throws CategoriaException {
 		List<CategoriaResponse> listResponse = categoriaService.findAll();
 		if (listResponse != null && !listResponse.isEmpty()) {
 			return ResponseEntity.ok(listResponse);
@@ -56,14 +56,14 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> newCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest)
+	public ResponseEntity<?> novaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest)
 			throws CategoriaException {
 		categoriaService.create(categoriaRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@DeleteMapping("/{idCategoria}")
-	public ResponseEntity<?> deleteCategoria(@PathVariable Long idCategoria) throws CategoriaException {
+	@DeleteMapping(value = "/{idCategoria}")
+	public ResponseEntity<?> excluiCategoria(@PathVariable Long idCategoria) throws CategoriaException {
 		long result = categoriaService.delete(idCategoria);
 		if (result > 0) {
 			return ResponseEntity.ok().build();
@@ -73,8 +73,8 @@ public class CategoriaController {
 
 	}
 
-	@PutMapping("/{idCategoria}")
-	public ResponseEntity<?> deleteCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest,
+	@PutMapping(value = "/{idCategoria}")
+	public ResponseEntity<?> atualizaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest,
 			@PathVariable Long idCategoria) throws CategoriaException {
 		categoriaService.update(categoriaRequest, idCategoria);
 		return ResponseEntity.ok().build();

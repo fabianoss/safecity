@@ -29,14 +29,14 @@ import br.com.safecity.response.ReclamacaoResponse;
 import br.com.safecity.service.ReclamacaoService;
 
 @RestController
-@RequestMapping(name = "/v1/reclamacoes")
+@RequestMapping(value ="/v1/reclamacoes")
 public class ReclamacaoController {
 
 	@Autowired
 	private ReclamacaoService reclamacaoService;
 
 	@GetMapping(value = "/{idReclamacao}")
-	public ResponseEntity<?> one1(@PathVariable Long idReclamacao) {
+	public ResponseEntity<?> reclamacaoByIdReclamacao(@PathVariable Long idReclamacao) throws ReclamacaoException {
 		Optional<ReclamacaoResponse> optResponse = reclamacaoService.findByReclamacao(idReclamacao);
 		if (optResponse.isPresent()) {
 			return ResponseEntity.ok(optResponse.get());
@@ -45,9 +45,9 @@ public class ReclamacaoController {
 		}
 	}
 
-	@GetMapping(value ="/all")
-	public ResponseEntity<?> all() throws ReclamacaoException{
-		List<ReclamacaoResponse> listResponse = reclamacaoService.findAll();
+	@GetMapping
+	public ResponseEntity<?> todasReclamacoes() throws ReclamacaoException {
+		List<ReclamacaoResponse> listResponse = reclamacaoService.buscaTodasReclamacoes();
 		if (listResponse != null && !listResponse.isEmpty()) {
 			return ResponseEntity.ok(listResponse);
 		} else {
@@ -55,16 +55,16 @@ public class ReclamacaoController {
 		}
 	}
 
-	@PostMapping("/new")
-	public ResponseEntity<?> newReclamacao(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest)
+	@PostMapping
+	public ResponseEntity<?> novaReclamacao(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest)
 			throws ReclamacaoException {
-		reclamacaoService.create(reclamacaoRequest);
+		reclamacaoService.novaReclamacao(reclamacaoRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@DeleteMapping("/{idReclamacao}")
-	public ResponseEntity<?> deleteReclamacao1(@PathVariable Long idReclamacao) {
-		long result = reclamacaoService.delete(idReclamacao);
+	@DeleteMapping(value = "/{idReclamacao}")
+	public ResponseEntity<?> excluiReclamacao(@PathVariable Long idReclamacao) throws ReclamacaoException {
+		long result = reclamacaoService.excluiReclamacao(idReclamacao);
 		if (result > 0) {
 			return ResponseEntity.ok().build();
 		} else {
@@ -72,10 +72,10 @@ public class ReclamacaoController {
 		}
 	}
 
-	@PutMapping("/{idReclamacao}")
-	public ResponseEntity<?> deleteReclamacao1(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest,
+	@PutMapping(value = "/{idReclamacao}")
+	public ResponseEntity<?> atualizaReclamacao(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest,
 			@PathVariable Long idReclamacao) throws ReclamacaoException {
-		reclamacaoService.update(reclamacaoRequest, idReclamacao);
+		reclamacaoService.atualizaReclamacao(reclamacaoRequest, idReclamacao);
 		return ResponseEntity.ok().build();
 	}
 
