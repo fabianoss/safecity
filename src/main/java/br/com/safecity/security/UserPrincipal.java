@@ -1,25 +1,37 @@
 package br.com.safecity.security;
 
-import br.com.safecity.domain.User;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import br.com.safecity.domain.User;
+
 public class UserPrincipal implements OAuth2User, UserDetails {
-    private Long id;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+//	@Field(name = "id")
+    private Long idUser;
+	
+//	@Field(name = "email")
     private String email;
-    private String password;
+
+//	@Field(name = "password")
+	private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
+    public UserPrincipal(Long idUser, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.idUser = idUser;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -30,7 +42,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new UserPrincipal(
-                user.getId(),
+                user.getIdUser(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
@@ -44,7 +56,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     public Long getId() {
-        return id;
+        return idUser;
     }
 
     public String getEmail() {
@@ -97,6 +109,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
-        return String.valueOf(id);
+        return String.valueOf(idUser);
     }
 }

@@ -1,16 +1,23 @@
 package br.com.safecity.domain;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(value = "user")
-public class User {
+public class User extends BaseDocument implements Serializable {
 
-	@Id
-	@Field(name = "id")
-	private Long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Field(name = "idUser")
+	@Indexed(unique = true)
+	private Long idUser;
 
 	@Field(name = "name")
 	private String name;
@@ -33,12 +40,14 @@ public class User {
 	@Field(name = "providerId")
 	private String providerId;
 
-	public Long getId() {
-		return id;
+
+
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
 	public String getName() {

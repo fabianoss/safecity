@@ -1,14 +1,20 @@
 package br.com.safecity.security;
 
-import br.com.safecity.config.AppProperties;
+import java.util.Date;
 
-import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import br.com.safecity.config.AppProperties;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Service
 public class TokenProvider {
@@ -16,6 +22,7 @@ public class TokenProvider {
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private AppProperties appProperties;
+    
 
     public TokenProvider(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -26,13 +33,19 @@ public class TokenProvider {
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
-
-        return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
-                .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
-                .compact();
+        String token = null; 
+        try {		
+        	token = Jwts.builder()
+		                .setSubject(Long.toString(userPrincipal.getId()))
+		                .setIssuedAt(new Date())
+		                .setExpiration(expiryDate)
+		                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+		                .compact();
+        }catch (Exception e) {
+			logger.error("erro dos infernos viado!!!!!!!!",e);
+			throw e;
+		}
+        return token;
     }
 
     public Long getUserIdFromToken(String token) {
@@ -61,4 +74,10 @@ public class TokenProvider {
         }
         return false;
     }
+    
+    public static void main(String[] args) {
+		
+    	String teste = "926D96C90030DD58429D2751AC1BDBBC";
+    	
+	}
 }

@@ -36,7 +36,7 @@ public class AuthController {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -70,10 +70,15 @@ public class AuthController {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+		Long idUser = userRepository.max();
+		idUser = (idUser != null ? ++idUser : 1L);
+		
+		user.setIdUser(idUser);
+		
 		User result = userRepository.save(user);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/me")
-				.buildAndExpand(result.getId()).toUri();
+				.buildAndExpand(result.getIdUser()).toUri();
 
 		return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully@"));
 	}
