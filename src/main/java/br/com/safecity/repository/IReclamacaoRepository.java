@@ -10,7 +10,7 @@ import br.com.safecity.domain.Reclamacao;
 public interface IReclamacaoRepository extends CrudRepository<Reclamacao, String>,IReclamacaoCustomRepository {
 
 	
-	@Aggregation(pipeline = { "{$group: { _id: '', total: {$max: @idReclamacao }}}"})
+	@Aggregation(pipeline = { "{$group: { _id: '', total: {$max: $idReclamacao }}}"})
 	public Long max();
 	
 	public Reclamacao findByIdReclamacao(Long idReclamacao);

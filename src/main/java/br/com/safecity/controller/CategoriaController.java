@@ -36,7 +36,7 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 
 	@GetMapping(value = "/{idCategoria}")
-	public ResponseEntity<?> categoriaByIdCategoria(@PathVariable Long idCategoria) throws CategoriaException {
+	public ResponseEntity<CategoriaResponse> categoriaByIdCategoria(@PathVariable Long idCategoria) throws CategoriaException {
 		Optional<CategoriaResponse> optResponse = categoriaService.findByCategoria(idCategoria);
 		if (optResponse.isPresent()) {
 			return ResponseEntity.ok(optResponse.get());
@@ -46,7 +46,7 @@ public class CategoriaController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> todasCategorias() throws CategoriaException {
+	public ResponseEntity<List<CategoriaResponse>> todasCategorias() throws CategoriaException {
 		List<CategoriaResponse> listResponse = categoriaService.findAll();
 		if (listResponse != null && !listResponse.isEmpty()) {
 			return ResponseEntity.ok(listResponse);
@@ -56,29 +56,28 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> novaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest)
+	public ResponseEntity<CategoriaResponse> novaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest)
 			throws CategoriaException {
 		categoriaService.create(categoriaRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
+	@PutMapping(value = "/{idCategoria}")
+	public ResponseEntity<Void> atualizaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest,
+			@PathVariable Long idCategoria) throws CategoriaException {
+		categoriaService.update(categoriaRequest, idCategoria);
+		return ResponseEntity.ok().build();
+
+	}
+	
 	@DeleteMapping(value = "/{idCategoria}")
-	public ResponseEntity<?> excluiCategoria(@PathVariable Long idCategoria) throws CategoriaException {
+	public ResponseEntity<Void> excluiCategoria(@PathVariable Long idCategoria) throws CategoriaException {
 		long result = categoriaService.delete(idCategoria);
 		if (result > 0) {
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.noContent().build();
 		}
-
-	}
-
-	@PutMapping(value = "/{idCategoria}")
-	public ResponseEntity<?> atualizaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest,
-			@PathVariable Long idCategoria) throws CategoriaException {
-		categoriaService.update(categoriaRequest, idCategoria);
-		return ResponseEntity.ok().build();
-
 	}
 
 	@ExceptionHandler(CategoriaException.class)

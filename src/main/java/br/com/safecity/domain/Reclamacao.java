@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,6 +18,7 @@ public class Reclamacao extends BaseDocument implements Serializable {
 	private static final long serialVersionUID = 8073574692157208057L;
 
 	@Field(name = "idReclamacao")
+	@Indexed(unique = true)
 	private Long idReclamacao;
 
 	@Field(name = "titulo")

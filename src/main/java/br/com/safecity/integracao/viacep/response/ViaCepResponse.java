@@ -1,55 +1,37 @@
-package br.com.safecity.domain;
+package br.com.safecity.integracao.viacep.response;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-public class Endereco implements Serializable{
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ViaCepResponse implements Serializable {
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4579460249634766889L;
-
-	@Field(name = "cep")
-	@Indexed(unique = true)
+	* 
+	*/
+	private static final long serialVersionUID = -5075938394032962493L;
+	@JsonProperty("cep")
 	private String cep;
-
-	@Field(name = "logradouro")
+	@JsonProperty("logradouro")
 	private String logradouro;
-
-	@Field(name = "complemento")
+	@JsonProperty("complemento")
 	private String complemento;
-
-	@Field(name = "bairro")
+	@JsonProperty("bairro")
 	private String bairro;
-
-	@Field(name = "localidade")
+	@JsonProperty("localidade")
 	private String localidade;
-
-	@Field(name = "uf")
+	@JsonProperty("uf")
 	private String uf;
-
-	@Field(name = "ibge")
+	@JsonProperty("ibge")
 	private String ibge;
-
-	@Field(name = "gia")
+	@JsonProperty("gia")
 	private String gia;
-
-	@Field(name = "ddd")
+	@JsonProperty("ddd")
 	private String ddd;
-
-	@Field(name = "siafi")
+	@JsonProperty("siafi")
 	private String siafi;
-
-	@Field(name = "latitude")
-	private BigDecimal latitude;
-
-	@Field(name = "longitude")
-	private BigDecimal longitude;
 
 	public String getCep() {
 		return cep;
@@ -129,22 +111,6 @@ public class Endereco implements Serializable{
 
 	public void setSiafi(String siafi) {
 		this.siafi = siafi;
-	}
-
-	public BigDecimal getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
-	}
-
-	public BigDecimal getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
 	}
 
 	@Override

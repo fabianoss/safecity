@@ -5,12 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 
 @JsonRootName(value = "categoriaRequest")
 public class CategoriaRequest implements Serializable {
@@ -23,6 +19,20 @@ public class CategoriaRequest implements Serializable {
 	@NotNull(message = "O campo descrição da categoria deve ser informado!")
 	@NotEmpty(message = "O campo descrição da categoria deve ser informado!")
 	private String descricaoCategoria;
+	
+	
+
+	public CategoriaRequest(
+			@NotNull(message = "O campo descrição da categoria deve ser informado!") 
+			@NotEmpty(message = "O campo descrição da categoria deve ser informado!") 
+			String descricaoCategoria) {
+		super();
+		this.descricaoCategoria = descricaoCategoria;
+	}
+
+	public CategoriaRequest() {
+		super();
+	}
 
 	public String getDescricaoCategoria() {
 		return descricaoCategoria;

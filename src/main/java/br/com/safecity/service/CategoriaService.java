@@ -8,6 +8,8 @@ import java.util.stream.StreamSupport;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +25,9 @@ import br.com.safecity.response.CategoriaResponse;
 @Validated
 public class CategoriaService {
 
+	private static final Logger logger = LoggerFactory.getLogger(CategoriaService.class);
+	
+	
 	@Autowired
 	private ICategoriaRepository categoriaRepository;
 
@@ -60,8 +65,15 @@ public class CategoriaService {
 	}
 
 	private Long maxCategoria() {
-		Long idCategoria = categoriaRepository.max();
+		Long idCategoria = 0L;
+	
+		try {
+			idCategoria = categoriaRepository.max();			
+		}catch (Exception e) {
+			logger.error("error maxCategoria {} ",e.getLocalizedMessage(),e);
+		}	
 		return (idCategoria != null ? ++idCategoria : 1L);
 	}
-
+	
+	
 }
