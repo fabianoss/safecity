@@ -1,55 +1,21 @@
-package br.com.safecity.domain;
+package br.com.safecity.integracao.viacep.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Field;
+public class ViapCepDto implements Serializable {
 
-public class Endereco implements Serializable{
+	private static final long serialVersionUID = -5075938394032962493L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4579460249634766889L;
-
-	@Field(name = "cep")
-	@Indexed(unique = true)
 	private String cep;
-
-	@Field(name = "logradouro")
 	private String logradouro;
-
-	@Field(name = "complemento")
 	private String complemento;
-
-	@Field(name = "bairro")
 	private String bairro;
-
-	@Field(name = "localidade")
 	private String localidade;
-
-	@Field(name = "uf")
 	private String uf;
-
-	@Field(name = "ibge")
 	private String ibge;
-
-	@Field(name = "gia")
 	private String gia;
-
-	@Field(name = "ddd")
 	private String ddd;
-
-	@Field(name = "siafi")
 	private String siafi;
-
-	@Field(name = "latitude")
-	private BigDecimal latitude;
-
-	@Field(name = "longitude")
-	private BigDecimal longitude;
 
 	public String getCep() {
 		return cep;
@@ -129,27 +95,6 @@ public class Endereco implements Serializable{
 
 	public void setSiafi(String siafi) {
 		this.siafi = siafi;
-	}
-
-	public BigDecimal getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
-	}
-
-	public BigDecimal getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
-	}
-
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
 	}
 
 }

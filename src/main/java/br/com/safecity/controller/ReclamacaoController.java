@@ -23,21 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.safecity.errors.ErrorDTO;
 import br.com.safecity.errors.mapper.ErrorMapper;
-import br.com.safecity.exception.CategoriaException;
-import br.com.safecity.request.CategoriaRequest;
-import br.com.safecity.response.CategoriaResponse;
-import br.com.safecity.service.CategoriaService;
+import br.com.safecity.exception.ReclamacaoException;
+import br.com.safecity.request.ReclamacaoRequest;
+import br.com.safecity.response.ReclamacaoResponse;
+import br.com.safecity.service.ReclamacaoService;
 
 @RestController
-@RequestMapping(value =  "/v1/categorias")
-public class CategoriaController {
+@RequestMapping(value = "/v1/reclamacoes")
+public class ReclamacaoController {
 
 	@Autowired
-	private CategoriaService categoriaService;
+	private ReclamacaoService reclamacaoService;
 
-	@GetMapping(value = "/{idCategoria}")
-	public ResponseEntity<CategoriaResponse> categoriaByIdCategoria(@PathVariable Long idCategoria) throws CategoriaException {
-		Optional<CategoriaResponse> optResponse = categoriaService.findByCategoria(idCategoria);
+	@GetMapping(value = "/{idReclamacao}")
+	public ResponseEntity<ReclamacaoResponse> reclamacaoByIdReclamacao(@PathVariable Long idReclamacao)
+			throws ReclamacaoException {
+		Optional<ReclamacaoResponse> optResponse = reclamacaoService.findByReclamacao(idReclamacao);
 		if (optResponse.isPresent()) {
 			return ResponseEntity.ok(optResponse.get());
 		} else {
@@ -46,8 +47,8 @@ public class CategoriaController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<CategoriaResponse>> todasCategorias() throws CategoriaException {
-		List<CategoriaResponse> listResponse = categoriaService.findAll();
+	public ResponseEntity<List<ReclamacaoResponse>> todasReclamacoes() throws ReclamacaoException {
+		List<ReclamacaoResponse> listResponse = reclamacaoService.buscaTodasReclamacoes();
 		if (listResponse != null && !listResponse.isEmpty()) {
 			return ResponseEntity.ok(listResponse);
 		} else {
@@ -56,23 +57,22 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CategoriaResponse> novaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest)
-			throws CategoriaException {
-		categoriaService.create(categoriaRequest);
+	public ResponseEntity<Void> novaReclamacao(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest)
+			throws ReclamacaoException {
+		reclamacaoService.novaReclamacao(reclamacaoRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@PutMapping(value = "/{idCategoria}")
-	public ResponseEntity<Void> atualizaCategoria(@Valid @RequestBody CategoriaRequest categoriaRequest,
-			@PathVariable Long idCategoria) throws CategoriaException {
-		categoriaService.update(categoriaRequest, idCategoria);
+	@PutMapping(value = "/{idReclamacao}")
+	public ResponseEntity<Void> atualizaReclamacao(@Valid @RequestBody ReclamacaoRequest reclamacaoRequest,
+			@PathVariable Long idReclamacao) throws ReclamacaoException {
+		reclamacaoService.atualizaReclamacao(reclamacaoRequest, idReclamacao);
 		return ResponseEntity.ok().build();
-
 	}
 	
-	@DeleteMapping(value = "/{idCategoria}")
-	public ResponseEntity<Void> excluiCategoria(@PathVariable Long idCategoria) throws CategoriaException {
-		long result = categoriaService.delete(idCategoria);
+	@DeleteMapping(value = "/{idReclamacao}")
+	public ResponseEntity<Void> excluiReclamacao(@PathVariable Long idReclamacao) throws ReclamacaoException {
+		long result = reclamacaoService.excluiReclamacao(idReclamacao);
 		if (result > 0) {
 			return ResponseEntity.ok().build();
 		} else {
@@ -80,10 +80,10 @@ public class CategoriaController {
 		}
 	}
 
-	@ExceptionHandler(CategoriaException.class)
+	@ExceptionHandler(ReclamacaoException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ErrorDTO handleCategoriaException(CategoriaException ex, HttpServletRequest request) {
+	public ErrorDTO handleReclamacaoException1(ReclamacaoException ex, HttpServletRequest request) {
 		ErrorDTO details = ErrorMapper.INSTANCE.toErrorDto(HttpStatus.BAD_REQUEST, "Validation Failed");
 		details.setMessage(ex.getLocalizedMessage());
 		details.setPath(request.getRequestURI());
