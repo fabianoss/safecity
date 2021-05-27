@@ -63,7 +63,7 @@ class CategoriaTest {
 	@Order(4)
 	void atualizaCategoria() throws Exception {
 		this.mockMvc.perform(
-				put("/v1/categorias/{idCategoria}",5)
+				put("/v1/categorias/{idCategoria}",6)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(asJsonString(new CategoriaRequest(randomString()))))
 				.andExpect(status().is2xxSuccessful());
